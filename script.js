@@ -15,6 +15,38 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase();
 const todosRef = ref(db, 'todos');
 
+// Hiển thị thông báo
+const showAlert = (content = null, time = 3000) => {
+    if(content) {
+        const newAlert = document.createElement("div");
+        newAlert.setAttribute("class", "alert alert--success");
+
+        newAlert.innerHTML = `
+            <span class="alert__content">${content}</span>
+            <span class="alert__close">
+                <i class="fa-solid fa-x"></i>
+            </span>
+        `;
+
+        const alertList = document.querySelector(".alert-list");
+
+        alertList.appendChild(newAlert);
+
+        const alertClose = newAlert.querySelector(".alert__close");
+
+        alertClose.addEventListener("click", () => {
+            alertList.removeChild(newAlert);
+        })
+
+        setTimeout(() => {
+            alertList.removeChild(newAlert);
+        }, time);
+    }
+    
+}
+    
+// Hết Hiển thị thông báo
+
 // Thêm công việc
 const todoAppCreate = document.querySelector("#todo-app-create");
 if(todoAppCreate) {
@@ -30,10 +62,11 @@ if(todoAppCreate) {
 
             const newTodoRef = push(todosRef);
             set(newTodoRef, data).then(() => {
-                console.log("Tạo thành công");
+                showAlert("Tạo thành công", 3000);
             })
 
             todoAppCreate.content.value = "";
+            
         }
     })
 }
@@ -97,7 +130,7 @@ onValue(todosRef, (items) => {
                 complete: true 
             };
             update(ref(db, '/todos/' + id), dataUpdate).then(() => {
-                console.log("Cập nhật thành công!")
+                showAlert("Cập nhật thành công!", 3000);
             });
         })
     })
@@ -113,7 +146,7 @@ onValue(todosRef, (items) => {
                 complete: false 
             };
             update(ref(db, '/todos/' + id), dataUpdate).then(() => {
-                console.log("Cập nhật thành công!")
+                showAlert("Hoàn tác thành công!", 3000);
             });
         })
     })
@@ -124,7 +157,7 @@ onValue(todosRef, (items) => {
         button.addEventListener("click", () => {
             const id = button.getAttribute("button-remove");
             remove(ref(db, '/todos/' + id)).then(() => {
-                console.log("Xóa thành công!");
+                showAlert("Xóa thành công!", 3000);
             });
         })
     })

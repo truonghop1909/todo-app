@@ -112,7 +112,9 @@
     align-items: center;
     justify-content: space-between;
     color: #fff;
-  }
+}
+
+  
   
   .alert--success {
     background-color: #60c700;
