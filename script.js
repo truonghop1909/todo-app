@@ -73,7 +73,9 @@ onValue(todosRef, (items) => {
                         <i class="fa-solid fa-pen-to-square"></i>
                     </button>
                     ${ButtonComplete}
-                    <button class="todo-app__item-button todo-app__item-button--delete">
+                    <button
+                        class="todo-app__item-button todo-app__item-button--delete"
+                        button-remove="${key}">
                         <i class="fa-solid fa-trash"></i>
                     </button>
                 </div>
@@ -115,18 +117,31 @@ onValue(todosRef, (items) => {
             });
         })
     })
+
+    // Tính năng xóa công việc
+    const listButtonRemove = document.querySelectorAll("[button-remove]");
+    listButtonRemove.forEach(button => {
+        button.addEventListener("click", () => {
+            const id = button.getAttribute("button-remove");
+            remove(ref(db, '/todos/' + id)).then(() => {
+                console.log("Xóa thành công!");
+            });
+        })
+    })
+    
+    // Hết Tính năng xóa công việc
     
     // Hết Tính năng hoàn tác công việc 
 
     // Cập nhật công việc
-    const buttonUpdate = document.querySelector(".button-update");
-    buttonUpdate.addEventListener("click", () => {
-        const id = "-OIoRhaYP9saIPlE-PKS";
-        const dataUpdate = {
-            fullName: "Le Van B"
-        };
-        update(ref(db, '/users/' + id), dataUpdate);
-    })
+    // const buttonUpdate = document.querySelector(".button-update");
+    // buttonUpdate.addEventListener("click", () => {
+    //     const id = "-OIoRhaYP9saIPlE-PKS";
+    //     const dataUpdate = {
+    //         fullName: "Le Van B"
+    //     };
+    //     update(ref(db, '/users/' + id), dataUpdate);
+    // })
 
     // Hết cập nhật công việc
 })
